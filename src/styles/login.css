@@ -1,0 +1,85 @@
+/* Background Gradient */
+.login-bg {
+  background: url("../assets/images/login.jpg");
+  background-size: 200% 200%;
+  animation: bgAnimation 12s infinite;
+}
+
+@keyframes bgAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Card Styling */
+.login-card {
+  backdrop-filter: blur(30px);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  color: white;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Input Fields */
+.futuristic-input {
+  background: rgba(255,255,255,0.2) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.futuristic-input::placeholder {
+  color: #e0e0e0;
+}
+
+/* Labels */
+.futuristic-label {
+  color: #e8f5e9;
+  font-weight: 500;
+}
+
+/* Title */
+.title-text {
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+/* Subtitle */
+.subtitle-text {
+  margin-top: -10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #c8e6c9;
+}
+
+/* Button */
+.login-btn {
+  background: #2e7d32 !important;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #1b5e20 !important;
+}
+
+/* Register Link */
+.register-text {
+  color: #e8f5e9;
+}
+
+.register-link {
+  color: #c8e6c9;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.register-link:hover {
+  color: white;
+}
