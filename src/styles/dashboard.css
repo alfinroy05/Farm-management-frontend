@@ -1,0 +1,73 @@
+.dashboard-bg {
+  background: url("../assets/images/dashboard.jpg");;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #f2f5f2;
+}
+
+.dashboard-subtitle {
+  color: #e9ece9;
+  font-size: 16px;
+}
+
+.sensor-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.sensor-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+.status-good {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.status-warning {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.status-info {
+  color: #0288d1;
+  font-weight: bold;
+}
+
+.predict-btn {
+  font-size: 20px;
+  padding: 12px 30px;
+  border-radius: 10px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.chart-placeholder {
+  background: #e8f5e9;
+  height: 180px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.alert-card {
+  background: #fff3e0;
+  padding: 20px;
+  border-radius: 12px;
+}
