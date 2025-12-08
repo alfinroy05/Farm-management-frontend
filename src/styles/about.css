@@ -1,0 +1,41 @@
+.about-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  padding-bottom: 40px;
+}
+
+.about-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  color: #2e7d32;
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+}
+
+.about-title {
+  font-weight: bold;
+  color: #1b5e20;
+}
+
+.about-subtitle {
+  color: #4caf50;
+  font-size: 14px;
+}
+
+.section-title {
+  margin-top: 20px;
+  font-weight: 600;
+  color: #1b5e20;
+}
+
+.about-text {
+  font-size: 15px;
+  color: #33691e;
+  text-align: justify;
+}
+
+.about-list li {
+  margin-bottom: 8px;
+  color: #2e7d32;
+  font-weight: 500;
+}
