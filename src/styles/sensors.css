@@ -1,0 +1,105 @@
+/* Background */
+.sensors-bg {
+  background: linear-gradient(135deg, #eef8f2, #d4f5de);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* Page Title */
+.sensors-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #0c471f;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Subtitle */
+.sensors-subtitle {
+  color: #3fa34d;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+}
+
+/* Sensor Card Enhancements */
+.sensor-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 18px;
+  padding: 23px;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.sensor-card:hover {
+  box-shadow: 0 0 25px rgba(46, 125, 50, 0.35);
+  transform: translateY(-7px);
+}
+
+/* Sensor Values */
+.sensor-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1e5f28;
+}
+
+.mini-bar {
+  height: 7px;
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Graph Card Upgrades */
+.graph-card {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0px 10px 28px rgba(0,0,0,0.12);
+  border-top: 4px solid #43a047;
+  transition: 0.3s ease;
+}
+
+.graph-card:hover {
+  box-shadow: 0px 15px 34px rgba(0,0,0,0.18);
+  transform: translateY(-8px);
+}
+
+/* Recharts Container Adjustment */
+.graph-card .recharts-responsive-container {
+  margin-top: 8px;
+}
+
+/* Tooltip Style (Recharts) */
+.recharts-tooltip-wrapper {
+  background: white !important;
+  border-radius: 8px !important;
+  padding: 5px 10px !important;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.15) !important;
+}
+
+/* Glow Animation (Optional) */
+.pulse {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0px rgba(46,125,50,0.25); }
+  50% { box-shadow: 0 0 20px rgba(46,125,50,0.45); }
+  100% { box-shadow: 0 0 0px rgba(46,125,50,0.25); }
+}
+
+/* Refresh Button */
+.refresh-btn {
+  padding: 12px 30px;
+  font-size: 18px;
+  border-radius: 12px;
+  background: #2e7d32;
+  border: none;
+  transition: 0.3s ease-in-out;
+}
+
+.refresh-btn:hover {
+  background: #1b5e20;
+  transform: scale(1.05);
+}
