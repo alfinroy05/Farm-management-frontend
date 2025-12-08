@@ -1,0 +1,59 @@
+.predict-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+}
+
+.predict-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #1b5e20;
+}
+
+.predict-subtitle {
+  color: #4caf50;
+  font-size: 15px;
+}
+
+.prediction-card {
+  background: white;
+  border-radius: 15px;
+}
+
+.predict-label {
+  font-weight: 600;
+  color: #1b5e20;
+}
+
+.predict-input {
+  border-radius: 8px;
+  border: 1px solid #a5d6a7;
+}
+
+.predict-btn {
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 8px;
+}
+
+.result-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+}
+
+.result-title {
+  font-weight: 600;
+  color: #1b5e20;
+}
+
+.result-value {
+  font-size: 26px;
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.result-desc {
+  color: #33691e;
+  font-size: 14px;
+}
