@@ -1,7 +1,7 @@
 /* Background Gradient */
 .login-bg {
   background: url("../assets/images/login.jpg");
-  background-size: 200% 200%;
+  background-size: 100% 100%;
   animation: bgAnimation 12s infinite;
 }
 
