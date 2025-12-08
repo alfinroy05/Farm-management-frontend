@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
 import Profile from './Pages/Profile';
 import About from './Pages/About';
 import Predict from './Pages/Predict';
+import Sensors from './Pages/Sensors';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/about' element={<About/>}/>
         <Route path='/predict' element={<Predict/>}/>
+        <Route path='/sensors' element={<Sensors/>}/>
       </Routes>
       </BrowserRouter>
     </div>
