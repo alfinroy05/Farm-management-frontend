@@ -1,0 +1,60 @@
+.qr-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  padding-bottom: 60px;
+}
+
+.qr-title {
+  color: #e0f7fa;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.qr-subtitle {
+  color: #80deea;
+  margin-top: -5px;
+}
+
+/* Card styling */
+.qr-card, .qr-result-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  color: white;
+}
+
+/* Inputs */
+.qr-input {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.qr-input::placeholder {
+  color: #bbdefb;
+}
+
+.qr-btn, .download-btn {
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* QR Info */
+.qr-detail {
+  color: #b2ebf2;
+  font-weight: 600;
+}
+
+.qr-value {
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.section-title {
+  color: #b2ebf2;
+  font-weight: 600;
+}

@@ -1,7 +1,34 @@
-import React from 'react'
-import "../styles/login.css";  // ✅ Correct lowercase file name
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom"; 
+import "../styles/login.css";  
 
 const Login = () => {
+
+  const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (!role) {
+      alert("Please select your role");
+      return;
+    }
+
+    // You can add backend API authentication here if needed.
+    // For now, we store login data locally for role-based routing.
+    localStorage.setItem("role", role);
+    localStorage.setItem("email", email);
+
+    // Redirect based on role ↓
+    if (role === "farmer") navigate("/dashboard");
+    else if (role === "store") navigate("/traceability");
+    else if (role === "consumer") navigate("/traceability");
+  };
+
   return (
     <div className="login-bg">
 
@@ -15,12 +42,15 @@ const Login = () => {
               <h2 className="text-center mb-3 title-text">🌿 AgriChain</h2>
               <p className="text-center subtitle-text">Smart Farming • Blockchain • AI Insights</p>
 
-              <form>
+              <form onSubmit={handleLogin}>
 
                 {/* Role Section */}
                 <div className="mb-3">
                   <label className="form-label futuristic-label">Select Role</label>
-                  <select className="form-select futuristic-input">
+                  <select 
+                    className="form-select futuristic-input"
+                    onChange={(e) => setRole(e.target.value)}
+                  >
                     <option value="">Choose your role</option>
                     <option value="farmer">👨‍🌾 Farmer</option>
                     <option value="consumer">🛒 Consumer</option>
@@ -35,6 +65,7 @@ const Login = () => {
                     type="email" 
                     className="form-control futuristic-input" 
                     placeholder="Enter your email"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
@@ -45,6 +76,7 @@ const Login = () => {
                     type="password" 
                     className="form-control futuristic-input" 
                     placeholder="Enter your password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
 
@@ -69,7 +101,7 @@ const Login = () => {
       </div>
 
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

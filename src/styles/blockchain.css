@@ -1,0 +1,82 @@
+.blockchain-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  padding-bottom: 60px;
+}
+
+.bc-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #369052;
+  text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
+
+.bc-subtitle {
+  color: #3fa34d;
+  font-size: 16px;
+  margin-top: -5px;
+}
+
+.bc-info-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 18px;
+  border-left: 5px solid #2e7d32;
+  color: #1b5e20;
+}
+
+.bc-table-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  border-left: 5px solid #43a047;
+}
+
+.futuristic-table thead {
+  background: #1b5e20;
+  color: white;
+}
+
+.futuristic-table th,
+.futuristic-table td {
+  padding: 14px;
+  vertical-align: middle;
+}
+
+.tx-hash {
+  font-family: monospace;
+  font-size: 13px;
+  color: #2e7d32;
+}
+
+/* Status Boxes */
+.status {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+  color: white;
+}
+
+.success {
+  background: #43a047;
+  box-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
+}
+
+.failed {
+  background: #e53935;
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.4);
+}
+
+/* Refresh Button */
+.refresh-btn {
+  padding: 11px 28px;
+  font-size: 16px;
+  border-radius: 10px;
+  background: #2e7d32;
+  border: none;
+  transition: 0.3s;
+}
+
+.refresh-btn:hover {
+  background: #1b5e20;
+  transform: scale(1.05);
+}

@@ -1,0 +1,107 @@
+.trace-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  padding-bottom: 60px;
+}
+
+.trace-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #e0f7fa;
+}
+
+.trace-subtitle {
+  color: #80deea;
+  font-size: 16px;
+  margin-top: -5px;
+}
+
+/* Input Card */
+.trace-input-card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  color: white;
+}
+
+.trace-input {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+}
+
+.trace-input::placeholder {
+  color: #cfd8dc;
+}
+
+.trace-btn {
+  padding: 10px 25px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+/* QR Section */
+.qr-box {
+  width: 180px;
+  height: 180px;
+  margin: auto;
+  background: rgba(255,255,255,0.15);
+  border-radius: 12px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #80deea;
+}
+
+.qr-text {
+  margin-top: 10px;
+  color: #b2ebf2;
+}
+
+/* Results Section */
+.trace-result-card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  color: white;
+}
+
+.result-title {
+  font-weight: 700;
+  color: #e0f7fa;
+}
+
+.result-label {
+  font-weight: 600;
+  color: #b2ebf2;
+}
+
+.result-value {
+  font-size: 20px;
+  font-weight: 500;
+  color: #fff;
+}
+
+/* Timeline */
+.timeline {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.timeline li {
+  padding: 10px;
+  border-left: 3px solid #80deea;
+  margin-bottom: 10px;
+  color: #e0f7fa;
+}
+
+/* Auth Section */
+.verified-text {
+  color: #a5fdea;
+  font-size: 16px;
+  margin-top: 5px;
+}
