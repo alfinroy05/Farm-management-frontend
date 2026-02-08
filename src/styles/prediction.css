@@ -36,7 +36,7 @@
 }
 
 .result-card {
-  background: white;
+  background: rgb(155, 32, 32);
   border-radius: 15px;
   padding: 20px;
   text-align: center;
@@ -44,16 +44,16 @@
 
 .result-title {
   font-weight: 600;
-  color: #1b5e20;
+  color: #23bc30;
 }
 
 .result-value {
   font-size: 26px;
-  color: #2e7d32;
+  color: #e8f0e8;
   font-weight: bold;
 }
 
 .result-desc {
-  color: #33691e;
+  color: #d5e4cf;
   font-size: 14px;
 }

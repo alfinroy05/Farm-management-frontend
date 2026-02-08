@@ -13,6 +13,7 @@ import GenerateQR from './Pages/GenerateQR';
 
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
+import VerifyBatch from './Pages/VerifyBatch';
 
 // Layout Wrapper (Navbar + Sidebar)
 const AppLayout = ({ element }) => (
@@ -53,32 +54,32 @@ function App() {
             <AppLayout element={
               <ProtectedRoute element={<Dashboard />} allowedRoles={["farmer"]} />
             } />
-          }/>
+          } />
 
           <Route path='/predict' element={
             <AppLayout element={
               <ProtectedRoute element={<Predict />} allowedRoles={["farmer"]} />
             } />
-          }/>
+          } />
 
           <Route path='/sensors' element={
             <AppLayout element={
               <ProtectedRoute element={<Sensors />} allowedRoles={["farmer"]} />
             } />
-          }/>
+          } />
 
           <Route path='/generateqr' element={
             <AppLayout element={
               <ProtectedRoute element={<GenerateQR />} allowedRoles={["farmer"]} />
             } />
-          }/>
+          } />
 
           {/* FARMER + STORE OWNER */}
           <Route path='/blockchain' element={
             <AppLayout element={
               <ProtectedRoute element={<Blockchain />} allowedRoles={["farmer", "store"]} />
             } />
-          }/>
+          } />
 
           {/* EVERYONE CAN ACCESS TRACEABILITY */}
           <Route path='/traceability' element={
@@ -90,13 +91,29 @@ function App() {
             <AppLayout element={
               <ProtectedRoute element={<Profile />} allowedRoles={["farmer", "store", "consumer"]} />
             } />
-          }/>
+          } />
 
           <Route path='/about' element={
             <AppLayout element={
               <ProtectedRoute element={<About />} allowedRoles={["farmer", "store", "consumer"]} />
             } />
-          }/>
+          } />
+
+          <Route
+            path="/verify/:batchId"
+            element={
+              <AppLayout
+                element={
+                  <ProtectedRoute
+                    element={<VerifyBatch />}
+                    allowedRoles={["farmer", "store", "consumer"]}
+                  />
+                }
+              />
+            }
+          />
+
+
 
         </Routes>
       </BrowserRouter>

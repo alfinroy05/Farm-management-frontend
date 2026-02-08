@@ -1,0 +1,21 @@
+.verify-bg {
+  min-height: 100vh;
+  background: #f4f6f8;
+  padding: 40px 0;
+}
+
+.verify-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.status-verified {
+  color: green;
+  font-weight: bold;
+}
+
+.status-failed {
+  color: red;
+  font-weight: bold;
+}

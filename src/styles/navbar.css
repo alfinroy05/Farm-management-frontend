@@ -36,3 +36,20 @@
 .logout-btn:hover {
   background: #b71c1c;
 }
+
+.navbar-center {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #1f2937;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav-btn:hover {
+  color: #16a34a;
+}
