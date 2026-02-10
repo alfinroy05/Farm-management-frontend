@@ -39,7 +39,7 @@ const Sensors = () => {
   const fetchAllBatches = () => {
     fetch("http://127.0.0.1:5000/api/batch/all")
       .then(res => res.json())
-      .then(data => setBatches(Array.isArray(data) ? data : []))
+      .then(data => setBatches(Array.isArray(data) ? data : data.data || []))
       .catch(() => setBatches([]));
   };
 
@@ -68,7 +68,7 @@ const Sensors = () => {
   };
 
   // ==============================
-  // Fetch batch sensor data
+  // Fetch BATCH sensor data
   // ==============================
   const fetchBatchSensorData = (batchId) => {
     fetch(`http://127.0.0.1:5000/api/sensors/batch/${batchId}`)
@@ -81,20 +81,20 @@ const Sensors = () => {
           return;
         }
 
-        const latest = data[data.length - 1].sensor_data[0];
+        const latest = data[data.length - 1].sensor_data;
         setSensorData(latest);
 
         setTempGraphData(
           data.map((row, i) => ({
             time: i + 1,
-            value: row.sensor_data[0].airTemp
+            value: row.sensor_data.airTemp
           }))
         );
 
         setMoistureGraphData(
           data.map((row, i) => ({
             time: i + 1,
-            value: row.sensor_data[0].soilMoisture
+            value: row.sensor_data.soilMoisture
           }))
         );
       })
@@ -115,7 +115,22 @@ const Sensors = () => {
   }, []);
 
   // ==============================
-  // On batch change
+  // Auto-refresh every 1 minute
+  // ==============================
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (selectedBatch) {
+        fetchBatchSensorData(selectedBatch);
+      } else {
+        fetchLiveSensorData();
+      }
+    }, 60000); // 1 minute
+
+    return () => clearInterval(interval);
+  }, [selectedBatch]);
+
+  // ==============================
+  // On batch change (immediate fetch)
   // ==============================
   useEffect(() => {
     if (!selectedBatch) {
@@ -137,7 +152,7 @@ const Sensors = () => {
         </h2>
 
         <p className="text-center sensors-subtitle">
-          {isHistorical ? "Historical Batch Data" : "Live Monitoring"}
+          {isHistorical ? "Historical Batch Data" : "Live Monitoring (Auto Refresh: 1 min)"}
         </p>
 
         {/* Batch Selector */}
