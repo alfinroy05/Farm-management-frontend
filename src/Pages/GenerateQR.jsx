@@ -6,12 +6,13 @@ const GenerateQR = () => {
   const [finalizedBatches, setFinalizedBatches] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
   const [qrValue, setQrValue] = useState("");
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // ==============================
   // Fetch finalized batches
   // ==============================
   useEffect(() => {
-    fetch("http://localhost:5000/api/batch/finalized")
+    fetch(`${API_BASE_URL}/api/batch/finalized`)
       .then(res => res.json())
       .then(data => setFinalizedBatches(data))
       .catch(() => setFinalizedBatches([]));
@@ -26,7 +27,7 @@ const GenerateQR = () => {
       return;
     }
 
-    const verifyUrl = `http://localhost:3000/verify/${selectedBatch}`;
+    const verifyUrl = `${API_BASE_URL}/verify/${selectedBatch}`;
     setQrValue(verifyUrl);
   };
 

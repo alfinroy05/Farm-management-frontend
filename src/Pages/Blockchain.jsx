@@ -4,13 +4,14 @@ import "../styles/blockchain.css";
 const Blockchain = () => {
   const [logs, setLogs] = useState([]);
   const [verifying, setVerifying] = useState(null);
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // -------------------------------
   // Fetch blockchain logs
   // -------------------------------
   const fetchLogs = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/blockchain/logs");
+      const res = await fetch(`${API_BASE_URL}/api/blockchain/logs`);
       const data = await res.json();
 
       const formatted = (Array.isArray(data) ? data : []).map((item) => ({
@@ -36,7 +37,7 @@ const Blockchain = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/trace/${batchId}`
+        `${API_BASE_URL}/api/trace/${batchId}`
       );
       const data = await res.json();
 
@@ -44,11 +45,11 @@ const Blockchain = () => {
         prev.map((item, i) =>
           i === index
             ? {
-                ...item,
-                status: data.tamperStatus === "NOT TAMPERED"
-                  ? "Verified"
-                  : "Tampered",
-              }
+              ...item,
+              status: data.tamperStatus === "NOT TAMPERED"
+                ? "Verified"
+                : "Tampered",
+            }
             : item
         )
       );
@@ -120,8 +121,8 @@ const Blockchain = () => {
                               log.status === "Verified"
                                 ? "status success"
                                 : log.status === "Tampered"
-                                ? "status failed"
-                                : "status pending"
+                                  ? "status failed"
+                                  : "status pending"
                             }
                           >
                             {log.status}
