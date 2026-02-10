@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [activeBatch, setActiveBatch] = useState(null);
   const [batches, setBatches] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // ✅ Tamper status (already working)
   const [tamperStatus, setTamperStatus] = useState(null);
@@ -34,7 +35,7 @@ const Dashboard = () => {
   // Fetch active batch
   // ==============================
   const fetchActiveBatch = () => {
-    fetch("http://127.0.0.1:5000/api/batch/current")
+    fetch(`${API_BASE_URL}/api/batch/current`)
       .then(res => res.json())
       .then(data => setActiveBatch(data.current_batch))
       .catch(() => setActiveBatch(null));
@@ -44,7 +45,7 @@ const Dashboard = () => {
   // Fetch all batches
   // ==============================
   const fetchAllBatches = () => {
-    fetch("http://127.0.0.1:5000/api/batch/all")
+    fetch(`${API_BASE_URL}/api/batch/all`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setBatches(data);
@@ -88,7 +89,7 @@ const Dashboard = () => {
   const fetchMLPrediction = (data) => {
     if (!data) return;
 
-    fetch("http://127.0.0.1:5000/api/predict", {
+    fetch(`${API_BASE_URL}/api/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -112,7 +113,7 @@ const Dashboard = () => {
   // Fetch latest sensor data
   // ==============================
   const fetchSensorData = () => {
-    fetch("http://127.0.0.1:5000/api/sensors/latest")
+    fetch(`${API_BASE_URL}/api/sensors/latest`)
       .then(res => res.json())
       .then(data => {
         if (data.error) {
@@ -142,7 +143,7 @@ const Dashboard = () => {
   // Fetch tamper status
   // ==============================
   const fetchTamperStatus = (batchId) => {
-    fetch(`http://127.0.0.1:5000/api/trace/${batchId}`)
+    fetch(`${API_BASE_URL}/api/trace/${batchId}`)
       .then(res => res.json())
       .then(data => {
         setTamperStatus(data.tamperStatus || "UNKNOWN");
@@ -170,7 +171,7 @@ const Dashboard = () => {
       return;
     }
 
-    fetch(`http://127.0.0.1:5000/api/sensors/batch/${selectedBatch}`)
+    fetch(`${API_BASE_URL}/api/sensors/batch/${selectedBatch}`)
       .then(res => res.json())
       .then(data => {
         if (!Array.isArray(data) || data.length === 0) {
@@ -226,7 +227,7 @@ const Dashboard = () => {
   // Create new batch
   // ==============================
   const createNewBatch = () => {
-    fetch("http://127.0.0.1:5000/api/batch/create", { method: "POST" })
+    fetch(`${API_BASE_URL}/api/batch/create`, { method: "POST" })
       .then(res => res.json())
       .then(data => {
         alert(`✅ New Batch Created: ${data.batch_id}`);
@@ -251,7 +252,7 @@ const Dashboard = () => {
 
     if (!window.confirm(`🌾 Finalize batch ${selectedBatch}?`)) return;
 
-    fetch("http://127.0.0.1:5000/api/batch/finalize", {
+    fetch(`${API_BASE_URL}/api/batch/finalize`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ batch_id: selectedBatch })

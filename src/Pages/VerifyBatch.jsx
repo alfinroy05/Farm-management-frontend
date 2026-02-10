@@ -9,6 +9,7 @@ const VerifyBatch = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // ✅ SINGLE SOURCE OF TRUTH
   const verifyBatch = async (idToVerify) => {
@@ -23,7 +24,7 @@ const VerifyBatch = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/trace/${idToVerify}`
+        `${API_BASE_URL}/api/trace/${idToVerify}`
       );
       const data = await res.json();
 

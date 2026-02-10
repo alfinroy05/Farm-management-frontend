@@ -22,12 +22,13 @@ const Sensors = () => {
 
   const [tempGraphData, setTempGraphData] = useState([]);
   const [moistureGraphData, setMoistureGraphData] = useState([]);
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   // ==============================
   // Fetch active batch
   // ==============================
   const fetchActiveBatch = () => {
-    fetch("http://127.0.0.1:5000/api/batch/current")
+    fetch(`${API_BASE_URL}/api/batch/current`)
       .then(res => res.json())
       .then(data => setActiveBatch(data.current_batch))
       .catch(() => setActiveBatch(null));
@@ -37,7 +38,7 @@ const Sensors = () => {
   // Fetch all batches
   // ==============================
   const fetchAllBatches = () => {
-    fetch("http://127.0.0.1:5000/api/batch/all")
+    fetch(`${API_BASE_URL}/api/batch/all`)
       .then(res => res.json())
       .then(data => setBatches(Array.isArray(data) ? data : data.data || []))
       .catch(() => setBatches([]));
@@ -47,7 +48,7 @@ const Sensors = () => {
   // Fetch LIVE sensor data
   // ==============================
   const fetchLiveSensorData = () => {
-    fetch("http://127.0.0.1:5000/api/sensors/latest")
+    fetch(`${API_BASE_URL}/api/sensors/latest`)
       .then(res => res.json())
       .then(data => {
         if (data.error) return;
@@ -71,7 +72,7 @@ const Sensors = () => {
   // Fetch BATCH sensor data
   // ==============================
   const fetchBatchSensorData = (batchId) => {
-    fetch(`http://127.0.0.1:5000/api/sensors/batch/${batchId}`)
+    fetch(`${API_BASE_URL}/api/sensors/batch/${batchId}`)
       .then(res => res.json())
       .then(data => {
         if (!Array.isArray(data) || data.length === 0) {

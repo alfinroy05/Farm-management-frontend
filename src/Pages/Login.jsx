@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom"; 
-import "../styles/login.css";  
+import { useNavigate } from "react-router-dom";
+import "../styles/login.css";
 
 const Login = () => {
 
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const Login = () => {
 
       <div className="container d-flex justify-content-center align-items-center vh-100">
         <div className="row w-100">
-          
+
           <div className="col col-12 col-sm-10 col-md-8 col-lg-5 mx-auto">
 
             <div className="login-card shadow-lg p-4">
@@ -47,7 +48,7 @@ const Login = () => {
                 {/* Role Section */}
                 <div className="mb-3">
                   <label className="form-label futuristic-label">Select Role</label>
-                  <select 
+                  <select
                     className="form-select futuristic-input"
                     onChange={(e) => setRole(e.target.value)}
                   >
@@ -61,9 +62,9 @@ const Login = () => {
                 {/* Email Field */}
                 <div className="mb-3">
                   <label className="form-label futuristic-label">Email</label>
-                  <input 
-                    type="email" 
-                    className="form-control futuristic-input" 
+                  <input
+                    type="email"
+                    className="form-control futuristic-input"
                     placeholder="Enter your email"
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -72,9 +73,9 @@ const Login = () => {
                 {/* Password Field */}
                 <div className="mb-3">
                   <label className="form-label futuristic-label">Password</label>
-                  <input 
-                    type="password" 
-                    className="form-control futuristic-input" 
+                  <input
+                    type="password"
+                    className="form-control futuristic-input"
                     placeholder="Enter your password"
                     onChange={(e) => setPassword(e.target.value)}
                   />

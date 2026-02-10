@@ -5,6 +5,7 @@ const Traceability = () => {
   const [traceData, setTraceData] = useState(null);
   const [batchId, setBatchId] = useState("");
   const [loading, setLoading] = useState(false);
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   const fetchTraceData = async () => {
     if (!batchId) {
@@ -17,7 +18,7 @@ const Traceability = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/trace/${batchId}`
+        `${API_BASE_URL}/api/trace/${batchId}`
       );
       const data = await res.json();
       setTraceData(data);

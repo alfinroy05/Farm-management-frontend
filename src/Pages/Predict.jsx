@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../styles/prediction.css";
 
 const Predict = () => {
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
 
   const [sensorData, setSensorData] = useState({
     airTemp: "",
@@ -29,7 +30,7 @@ const Predict = () => {
   // Fetch all batches
   // ==============================
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/batch/all")
+    fetch(`${API_BASE_URL}/api/batch/all`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setBatches(data);
@@ -88,7 +89,7 @@ const Predict = () => {
   // Trigger ML Prediction
   // ==============================
   const autoPredict = (data) => {
-    fetch("http://127.0.0.1:5000/api/predict", {
+    fetch(`${API_BASE_URL}/api/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -142,7 +143,7 @@ const Predict = () => {
     };
 
     if (selectedBatch) {
-      fetch(`http://127.0.0.1:5000/api/sensors/batch/${selectedBatch}`)
+      fetch(`${API_BASE_URL}/api/sensors/batch/${selectedBatch}`)
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data) && data.length > 0) {
@@ -150,7 +151,7 @@ const Predict = () => {
           }
         });
     } else {
-      fetch("http://127.0.0.1:5000/api/sensors/latest")
+      fetch(`${API_BASE_URL}/api/sensors/latest`)
         .then(res => res.json())
         .then(data => {
           if (!data.error) processSensor(data);
@@ -213,8 +214,8 @@ const Predict = () => {
               <div className="col-md-4 mt-3" key={i}>
                 <label className="predict-label">
                   {nutrient === "N" ? "Nitrogen (N)" :
-                   nutrient === "P" ? "Phosphorus (P)" :
-                   "Potassium (K)"}
+                    nutrient === "P" ? "Phosphorus (P)" :
+                      "Potassium (K)"}
                 </label>
                 <input
                   className="form-control predict-input"
