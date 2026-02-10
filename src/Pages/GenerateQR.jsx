@@ -27,7 +27,10 @@ const GenerateQR = () => {
       return;
     }
 
-    const verifyUrl = `${API_BASE_URL}/verify/${selectedBatch}`;
+    const FRONTEND_URL = process.env.REACT_APP_FRONTEND_URL;
+
+    const verifyUrl = `${FRONTEND_URL}/verify/${selectedBatch}`;
+
     setQrValue(verifyUrl);
   };
 
