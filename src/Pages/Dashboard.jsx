@@ -24,6 +24,12 @@ const Dashboard = () => {
   const [batches, setBatches] = useState([]);
   const [selectedBatch, setSelectedBatch] = useState("");
 
+  // ✅ Tamper status (already working)
+  const [tamperStatus, setTamperStatus] = useState(null);
+
+  // ✅ NEW: ML Insight (safe add-on)
+  const [mlInsight, setMlInsight] = useState(null);
+
   // ==============================
   // Fetch active batch
   // ==============================
@@ -35,26 +41,75 @@ const Dashboard = () => {
   };
 
   // ==============================
-  // Fetch all batches (NORMALIZED)
+  // Fetch all batches
   // ==============================
   const fetchAllBatches = () => {
     fetch("http://127.0.0.1:5000/api/batch/all")
       .then(res => res.json())
       .then(data => {
-        // ✅ Normalize response
-        if (Array.isArray(data)) {
-          setBatches(data);
-        } else if (Array.isArray(data.data)) {
-          setBatches(data.data);
-        } else {
-          setBatches([]);
-        }
+        if (Array.isArray(data)) setBatches(data);
+        else if (Array.isArray(data.data)) setBatches(data.data);
+        else setBatches([]);
       })
       .catch(() => setBatches([]));
   };
+  // ==============================
+  // AI-based Suggestions
+  // ==============================
+  const getAISuggestions = (ml) => {
+    if (!ml) return [];
+
+    const suggestions = [];
+
+    if (ml.crop_health === "Poor" || ml.crop_health === "Moderate") {
+      suggestions.push("🌱 Improve soil nutrition and irrigation scheduling.");
+    }
+
+    if (ml.disease_risk === "High") {
+      suggestions.push("🦠 Apply preventive disease control measures.");
+      suggestions.push("🚫 Avoid harvesting until risk reduces.");
+    }
+
+    if (ml.disease_risk === "Medium") {
+      suggestions.push("🔍 Monitor crop health closely for next 48 hours.");
+    }
+
+    if (ml.crop_health === "Healthy" && ml.disease_risk === "Low") {
+      suggestions.push("✅ No immediate action required. Maintain current practices.");
+    }
+
+    return suggestions;
+  };
+
 
   // ==============================
-  // Fetch latest sensor data (ACTIVE batch)
+  // Fetch ML Prediction (SAFE)
+  // ==============================
+  const fetchMLPrediction = (data) => {
+    if (!data) return;
+
+    fetch("http://127.0.0.1:5000/api/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        airTemp: data.airTemp,
+        soilMoisture: data.soilMoisture,
+        humidity: data.humidity
+      })
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (!result || result.error) {
+          setMlInsight(null);
+          return;
+        }
+        setMlInsight(result);
+      })
+      .catch(() => setMlInsight(null));
+  };
+
+  // ==============================
+  // Fetch latest sensor data
   // ==============================
   const fetchSensorData = () => {
     fetch("http://127.0.0.1:5000/api/sensors/latest")
@@ -66,7 +121,8 @@ const Dashboard = () => {
         }
 
         setSensorData(data);
-        generateAlerts(data);
+        generateAlerts(data);     // ✅ Threshold logic untouched
+        fetchMLPrediction(data); // ✅ ML added safely
 
         setChartData(prev =>
           [
@@ -83,6 +139,18 @@ const Dashboard = () => {
   };
 
   // ==============================
+  // Fetch tamper status
+  // ==============================
+  const fetchTamperStatus = (batchId) => {
+    fetch(`http://127.0.0.1:5000/api/trace/${batchId}`)
+      .then(res => res.json())
+      .then(data => {
+        setTamperStatus(data.tamperStatus || "UNKNOWN");
+      })
+      .catch(() => setTamperStatus("UNKNOWN"));
+  };
+
+  // ==============================
   // Initial load
   // ==============================
   useEffect(() => {
@@ -96,6 +164,8 @@ const Dashboard = () => {
   // ==============================
   useEffect(() => {
     if (!selectedBatch) {
+      setTamperStatus(null);
+      setMlInsight(null);
       fetchSensorData();
       return;
     }
@@ -110,7 +180,7 @@ const Dashboard = () => {
         }
 
         const latest = data[data.length - 1];
-        const sensor = latest.sensor_data[0];
+        const sensor = latest.sensor_data;
 
         setSensorData({
           ...sensor,
@@ -118,11 +188,13 @@ const Dashboard = () => {
           merkle_root: latest.merkle_root
         });
 
+        fetchMLPrediction(sensor);
+
         setChartData(
           data.map((row, index) => ({
             time: index + 1,
-            temperature: row.sensor_data[0].airTemp,
-            soilMoisture: row.sensor_data[0].soilMoisture
+            temperature: row.sensor_data.airTemp,
+            soilMoisture: row.sensor_data.soilMoisture
           }))
         );
       })
@@ -130,23 +202,22 @@ const Dashboard = () => {
         setSensorData(null);
         setChartData([]);
       });
+
+    fetchTamperStatus(selectedBatch);
   }, [selectedBatch]);
 
   // ==============================
-  // Alerts
+  // Alerts (threshold-based)
   // ==============================
   const generateAlerts = (data) => {
     const warnings = [];
 
-    if (data.soilMoisture < 40) {
+    if (data.soilMoisture < 40)
       warnings.push("⚠ Soil moisture is low. Irrigation recommended.");
-    }
-    if (data.airTemp > 35) {
+    if (data.airTemp > 35)
       warnings.push("⚠ High temperature detected. Heat stress possible.");
-    }
-    if (data.humidity > 80) {
+    if (data.humidity > 80)
       warnings.push("⚠ High humidity may increase disease risk.");
-    }
 
     setAlerts(warnings);
   };
@@ -164,6 +235,7 @@ const Dashboard = () => {
         fetchAllBatches();
         setSensorData(null);
         setChartData([]);
+        setMlInsight(null);
       })
       .catch(() => alert("❌ Failed to create batch"));
   };
@@ -172,23 +244,38 @@ const Dashboard = () => {
   // Finalize batch
   // ==============================
   const finalizeBatch = () => {
-    if (!window.confirm("🌾 Finalize this harvest batch?")) return;
+    if (!selectedBatch) {
+      alert("❌ Please select a batch to finalize");
+      return;
+    }
 
-    fetch("http://127.0.0.1:5000/api/batch/finalize", { method: "POST" })
+    if (!window.confirm(`🌾 Finalize batch ${selectedBatch}?`)) return;
+
+    fetch("http://127.0.0.1:5000/api/batch/finalize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ batch_id: selectedBatch })
+    })
       .then(res => res.json())
       .then(data => {
+        if (data.error) {
+          alert("❌ " + data.error);
+          return;
+        }
+
         alert(`🌾 Batch Finalized: ${data.batch_id}`);
         setSelectedBatch("");
         fetchActiveBatch();
         fetchAllBatches();
         setSensorData(null);
         setChartData([]);
+        setTamperStatus(null);
+        setMlInsight(null);
       })
       .catch(() => alert("❌ Failed to finalize batch"));
   };
 
-  const isHistorical =
-    selectedBatch && selectedBatch !== activeBatch;
+  const isHistorical = selectedBatch && selectedBatch !== activeBatch;
 
   // ==============================
   // UI
@@ -210,20 +297,17 @@ const Dashboard = () => {
             </span>
           </h5>
 
-          {/* Batch Selector */}
           <select
             className="form-select w-50 mx-auto mt-2"
             value={selectedBatch}
             onChange={(e) => setSelectedBatch(e.target.value)}
           >
             <option value="">🔄 View Active Batch</option>
-
-            {Array.isArray(batches) &&
-              batches.map(b => (
-                <option key={b.batch_id} value={b.batch_id}>
-                  {b.batch_id} ({b.status})
-                </option>
-              ))}
+            {batches.map(b => (
+              <option key={b.batch_id} value={b.batch_id}>
+                {b.batch_id} ({b.status})
+              </option>
+            ))}
           </select>
 
           <div className="mt-3">
@@ -233,7 +317,7 @@ const Dashboard = () => {
 
             <button
               className="btn btn-danger"
-              disabled={!activeBatch}
+              disabled={!selectedBatch}
               onClick={finalizeBatch}
             >
               🌾 Finalize Harvest
@@ -246,8 +330,7 @@ const Dashboard = () => {
           {[
             ["🌡 Temperature", `${sensorData?.airTemp ?? "--"} °C`],
             ["💧 Soil Moisture", `${sensorData?.soilMoisture ?? "--"} %`],
-            ["☁ Humidity", `${sensorData?.humidity ?? "--"} %`],
-            ["🔬 Soil pH", sensorData?.soilPH ?? "--"]
+            ["☁ Humidity", `${sensorData?.humidity ?? "--"} %`]
           ].map(([label, value], i) => (
             <div className="col-md-4 mt-3" key={i}>
               <div className="sensor-card shadow">
@@ -260,10 +343,10 @@ const Dashboard = () => {
 
           <div className="col-md-4 mt-3">
             <div className="sensor-card shadow">
-              <h4>🧪 NPK Levels</h4>
+              <h4>🔗 Blockchain TX</h4>
               <p className="sensor-value">
-                {sensorData?.npk
-                  ? `N:${sensorData.npk.N} P:${sensorData.npk.P} K:${sensorData.npk.K}`
+                {sensorData?.blockchain_tx
+                  ? sensorData.blockchain_tx.slice(0, 12) + "..."
                   : "--"}
               </p>
             </div>
@@ -271,11 +354,19 @@ const Dashboard = () => {
 
           <div className="col-md-4 mt-3">
             <div className="sensor-card shadow">
-              <h4>🔗 Blockchain TX</h4>
-              <p className="sensor-value">
-                {sensorData?.blockchain_tx
-                  ? sensorData.blockchain_tx.slice(0, 12) + "..."
-                  : "--"}
+              <h4>🛡 Integrity Status</h4>
+              <p
+                className="sensor-value"
+                style={{
+                  color:
+                    tamperStatus === "NOT TAMPERED"
+                      ? "green"
+                      : tamperStatus === "TAMPERED"
+                        ? "red"
+                        : "gray"
+                }}
+              >
+                {tamperStatus ?? "--"}
               </p>
             </div>
           </div>
@@ -306,15 +397,54 @@ const Dashboard = () => {
         </div>
 
         {/* ALERTS */}
+        {/* ALERTS */}
         <div className="row mt-5">
           <div className="col-12">
             <div className="alert-card shadow">
-              <h5>⚠ Farm Alerts</h5>
+              <h5>⚠ Farm Alerts & AI Suggestions</h5>
+
+              {/* Threshold Alerts */}
               {alerts.length === 0 ? (
-                <p>No alerts. Farm conditions are stable.</p>
+                <p>✅ No critical threshold alerts.</p>
               ) : (
                 <ul>
                   {alerts.map((a, i) => <li key={i}>{a}</li>)}
+                </ul>
+              )}
+
+              <hr />
+
+              {/* AI/ML Suggestions */}
+              <h6>🤖 AI Recommendations</h6>
+              {mlInsight ? (
+                <ul>
+                  {getAISuggestions(mlInsight).map((s, i) => (
+                    <li key={i}>{s}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>AI analysis unavailable. Using rule-based monitoring.</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+
+        {/* 🤖 ML INSIGHTS */}
+        <div className="row mt-4">
+          <div className="col-12">
+            <div className="alert-card shadow">
+              <h5>🤖 AI Crop & Disease Insight</h5>
+              {!mlInsight ? (
+                <p>ML analysis not available. Using threshold-based monitoring.</p>
+              ) : (
+                <ul>
+                  {mlInsight.crop_health && (
+                    <li>🌱 Crop Health: <strong>{mlInsight.crop_health}</strong></li>
+                  )}
+                  {mlInsight.disease_risk && (
+                    <li>🦠 Disease Risk: <strong>{mlInsight.disease_risk}</strong></li>
+                  )}
                 </ul>
               )}
             </div>
